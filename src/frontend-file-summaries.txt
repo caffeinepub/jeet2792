@@ -1,0 +1,18 @@
+{
+  "frontend/src/App.tsx": "Main application component with header, footer, authentication controls, profile setup modal, and trading dashboard; includes theme provider and toast notifications.",
+  "frontend/src/components/AuthControls.tsx": "Login/logout button component that handles Internet Identity authentication and clears query cache on logout.",
+  "frontend/src/components/ProfileSetupModal.tsx": "Modal dialog that prompts new users to enter their name on first login, preventing modal flash with proper loading states.",
+  "frontend/src/features/trading/TradingDashboard.tsx": "Main dashboard component that orchestrates all trading features, switching between authenticated (persisted) and unauthenticated (session) data modes with proper undefined handling and loading states.",
+  "frontend/src/features/trading/components/MetricsPanel.tsx": "Displays four key metrics (capital, total profit, total loss, target remaining) in a responsive grid of cards with icons and color coding.",
+  "frontend/src/features/trading/components/CapitalEditor.tsx": "Card component allowing users to set and edit their trading capital with validation and immediate updates.",
+  "frontend/src/features/trading/components/TargetProfitEditor.tsx": "Card component for setting target profit goals with real-time display of remaining amount to reach target.",
+  "frontend/src/features/trading/components/TradeEntry.tsx": "Main trade recording interface with investment presets, outcome buttons (Win/Loss), and computed profit/loss preview.",
+  "frontend/src/features/trading/components/InvestPresets.tsx": "Quick-select buttons for preset investment amounts (₹1 to ₹10,000) plus custom amount input field.",
+  "frontend/src/features/trading/components/TradeHistory.tsx": "Table displaying all recorded trades with timestamp, investment, outcome badge, and profit/loss amounts, sorted by most recent first.",
+  "frontend/src/features/trading/components/ResetTradingDataButton.tsx": "Button with confirmation dialog to reset all trading data (capital, target, totals, and history).",
+  "frontend/src/features/trading/hooks/useTradingData.ts": "React Query hooks for all backend operations including fetching trading data, setting capital/target, recording trades, resetting data, and managing user profiles.",
+  "frontend/src/features/trading/state/useTradingSession.ts": "Zustand store managing local session state for unauthenticated users with capital, target, totals, and trade history.",
+  "frontend/src/features/trading/utils/tradingMath.ts": "Utility functions for calculating win profit/return (1.98x payout), target remaining, and currency formatting.",
+  "frontend/src/index.css": "Global styles with warm orange/amber OKLCH color system for both light and dark modes, avoiding default blue/purple palette.",
+  "frontend/tailwind.config.js": "Tailwind configuration with Inter font family and extended theme tokens matching the custom OKLCH color system."
+}

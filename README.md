@@ -1,2 +1,3 @@
-# jeet2792
-Exported from Caffeine project: jeet2792
+## jeet2792
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

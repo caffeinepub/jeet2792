@@ -1,0 +1,179 @@
+{
+  "kind": "build_request",
+  "title": "Build trading calculator app “jeet2792” with win/loss trades and fixed 1.98x payout",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create the “jeet2792” app shell with a coherent, consistent visual theme (colors, typography, spacing, and layout) applied across all screens/components.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a complete trading calculator app named “jeet2792”."
+        ]
+      },
+      "acceptanceCriteria": [
+        "All user-facing text is in English.",
+        "App has a consistent theme (no default/unstyled UI), including clear hierarchy for key stats and inputs.",
+        "Theme avoids blue/purple as the primary palette unless explicitly chosen by the user (not requested here)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement trading capital management: allow the user to set and edit the current trading capital manually at any time, and reflect changes immediately across all computed stats.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "The app must allow the user to set and edit trading capital manually at any time."
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can enter a capital amount and save it; the displayed current capital updates immediately.",
+        "User can edit capital again later; stats recalculate using the updated capital.",
+        "Capital cannot be set to a non-numeric value; invalid input is rejected with an inline error."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement target profit tracking: provide an input where the user defines a target profit amount, and show “target remaining” in real time based on accumulated total profit (and not affected by losses unless profit decreases is explicitly implemented—keep it based on total profit).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "The app must have a target profit input, where the user can define how much profit they want to withdraw or achieve.",
+          "Show current capital, total profit, total loss, and target remaining in real time."
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can set/edit a target profit amount at any time.",
+        "UI displays target remaining = max(targetProfit - totalProfit, 0) and updates immediately after any change in target or after recording a trade.",
+        "Invalid/non-numeric target input is rejected with an inline error."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement trade entry with exactly two outcomes (Win or Loss) and fixed return logic (1.98x payout): for a Win, profit = invest * 0.98 and return = invest * 1.98; for a Loss, loss amount = invest. The UI must support selecting/entering an invest amount and then recording Win/Loss.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Each trade must have only two outcomes: Win or Loss.",
+          "Use the following fixed return logic (1.98x payout):",
+          "The app must automatically update capital after every trade:\n\nIf Win → add profit to capital\n\nIf Loss → subtract invested amount from capital"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Trade outcome choices are limited to Win and Loss only.",
+        "For Win trades: stored/displayed profit equals invest * 0.98 and return equals invest * 1.98 (with appropriate rounding to 2 decimals for currency display).",
+        "For Loss trades: stored/displayed loss equals invest amount.",
+        "User can record a trade only when invest is a valid positive number."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Apply the provided investment/return/profit table as fixed presets: provide quick-select options for the exact invest amounts (₹1, ₹10, ₹50, ₹100, ₹200, ₹500, ₹1,000, ₹2,000, ₹5,000, ₹10,000) and show the corresponding return and profit values according to the table/1.98x rule.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Use the following fixed return logic (1.98x payout):\n\nInvest (₹)\tReturn (₹)\tProfit (₹)\n1\t1.98\t0.98\n10\t19.80\t9.80\n50\t99\t49\n100\t198\t98\n200\t396\t196\n500\t990\t490\n1,000\t1,980\t980\n2,000\t3,960\t1,960\n5,000\t9,900\t4,900\n10,000\t19,800\t9,800"
+        ]
+      },
+      "acceptanceCriteria": [
+        "UI includes quick-select controls for all listed invest presets.",
+        "When a preset is selected, the UI shows the correct return and profit values matching the provided table.",
+        "If manual invest entry is supported, computed values still follow the 1.98x/0.98x logic."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Automatically update running totals after each recorded trade and display real-time dashboard metrics: current capital, total profit, total loss, and target remaining. Update logic: Win → capital += profit; totalProfit += profit. Loss → capital -= invest; totalLoss += invest.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "The app must automatically update capital after every trade:\n\nIf Win → add profit to capital\n\nIf Loss → subtract invested amount from capital\n\nShow current capital, total profit, total loss, and target remaining in real time."
+        ]
+      },
+      "acceptanceCriteria": [
+        "After recording a Win trade, current capital increases by the computed profit and total profit increases by the same amount.",
+        "After recording a Loss trade, current capital decreases by the invested amount and total loss increases by the same amount.",
+        "All four metrics (capital, total profit, total loss, target remaining) update immediately after each trade is recorded."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Add a trade history list showing recorded trades (at minimum: timestamp, invest amount, outcome, and profit or loss amount) and provide a clear reset mechanism to start over (reset should require confirmation).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a complete trading calculator app named “jeet2792”."
+        ]
+      },
+      "acceptanceCriteria": [
+        "After each trade, a new entry appears in history with the correct computed values.",
+        "History clearly differentiates Win vs Loss trades and shows the relevant amount (profit for win, loss for loss).",
+        "User can reset all session data (capital/target/totals/history) only after confirming; after reset, all metrics return to zero/empty state."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Persist user data on the Internet Computer per authenticated user (Internet Identity): capital, target profit, totals, and trade history should load on app start and be saved after any change.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a complete trading calculator app named “jeet2792”."
+        ]
+      },
+      "acceptanceCriteria": [
+        "When signed in, user data (capital/target/totals/history) is restored after refresh/reopen.",
+        "Changes (editing capital, editing target, recording trade, reset) persist and are reflected after reload.",
+        "Unauthenticated users can still use the calculator locally in the UI for the current session, but persistence requires signing in (or clearly prompt to sign in)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor with all logic in the main actor file specified by the template.",
+    "Do not edit any frontend files under frontend/src/components/ui or other paths listed as immutable in SYSTEM_CONTEXT; compose them instead.",
+    "Use English for all user-facing text."
+  ],
+  "nonGoals": [
+    "No external databases or third-party auth providers beyond Internet Identity.",
+    "No real-time networking (websockets) or multi-user shared state features.",
+    "No payment processing or brokerage/exchange integrations."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Trading calculator app “jeet2792” that lets users manage trading capital, set a target profit, record trades as win/loss with fixed 1.98x payout logic, and shows real-time capital/profit/loss/target remaining.",
+  "architectural_notes": [
+    "Use fixed payout multiplier 1.98x (profit = invest * 0.98) consistent with the provided table.",
+    "Capital update rules per trade: Win => capital += profit; Loss => capital -= invested amount.",
+    "Maintain running totals for total profit and total loss; compute target remaining in real time."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-the-jeet2792-app-shell-with-a-coherent-consistent-visual-theme-colors-typography-spacing-and-layout-applied-across-all-screens-components",
+      "title": "Create the “jeet2792” app shell with a coherent, consistent visual theme (colors, typography, spacing, and layout) applied across all screens/components.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-trading-capital-management-allow-the-user-to-set-and-edit-the-current-trading-capital-manually-at-any-time-and-reflect-changes-immediately-across-all-computed-stats",
+      "title": "Implement trading capital management: allow the user to set and edit the current trading capital manually at any time, and reflect changes immediately across all computed stats.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-target-profit-tracking-provide-an-input-where-the-user-defines-a-target-profit-amount-and-show-target-remaining-in-real-time-based-on-accumulated-total-profit-and-not-affected-by-losses-unless-profit-decreases-is-explicitly-implemented-keep-it-based-on-total-profit",
+      "title": "Implement target profit tracking: provide an input where the user defines a target profit amount, and show “target remaining” in real time based on accumulated total profit (and not affected by losses unless profit decreases is explicitly implemented—keep it based on total profit).",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-trade-entry-with-exactly-two-outcomes-win-or-loss-and-fixed-return-logic-1-98x-payout-for-a-win-profit-invest-0-98-and-return-invest-1-98-for-a-loss-loss-amount-invest-the-ui-must-support-selecting-entering-an-invest-amount-and-then-recording-win-loss",
+      "title": "Implement trade entry with exactly two outcomes (Win or Loss) and fixed return logic (1.98x payout): for a Win, profit = invest * 0.98 and return = invest * 1.98; for a Loss, loss amount = invest. The UI must support selecting/entering an invest amount and then recording Win/Loss.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-the-provided-investment-return-profit-table-as-fixed-presets-provide-quick-select-options-for-the-exact-invest-amounts-1-10-50-100-200-500-1-000-2-000-5-000-10-000-and-show-the-corresponding-return-and-profit-values-according-to-the-table-1-98x-rule",
+      "title": "Apply the provided investment/return/profit table as fixed presets: provide quick-select options for the exact invest amounts (₹1, ₹10, ₹50, ₹100, ₹200, ₹500, ₹1,000, ₹2,000, ₹5,000, ₹10,000) and show the corresponding return and profit values according to the table/1.98x rule.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-automatically-update-running-totals-after-each-recorded-trade-and-display-real-time-dashboard-metrics-current-capital-total-profit-total-loss-and-target-remaining-update-logic-win-capital-profit-totalprofit-profit-loss-capital-invest-totalloss-invest",
+      "title": "Automatically update running totals after each recorded trade and display real-time dashboard metrics: current capital, total profit, total loss, and target remaining. Update logic: Win → capital += profit; totalProfit += profit. Loss → capital -= invest; totalLoss += invest.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-trade-history-list-showing-recorded-trades-at-minimum-timestamp-invest-amount-outcome-and-profit-or-loss-amount-and-provide-a-clear-reset-mechanism-to-start-over-reset-should-require-confirmation",
+      "title": "Add a trade history list showing recorded trades (at minimum: timestamp, invest amount, outcome, and profit or loss amount) and provide a clear reset mechanism to start over (reset should require confirmation).",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-persist-user-data-on-the-internet-computer-per-authenticated-user-internet-identity-capital-target-profit-totals-and-trade-history-should-load-on-app-start-and-be-saved-after-any-change",
+      "title": "Persist user data on the Internet Computer per authenticated user (Internet Identity): capital, target profit, totals, and trade history should load on app start and be saved after any change.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "App setup for trading calculator named “jeet2792”",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Allow user to set and edit trading capital manually at any time",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Target profit input to define desired profit to withdraw/achieve and track remaining target",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Trade entry with only two outcomes: Win or Loss",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Apply fixed return logic with 1.98x payout (profit = invest * 0.98) using provided investment/return/profit table",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Automatically update capital after each trade (Win: add profit; Loss: subtract invested amount)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Real-time dashboard showing current capital, total profit, total loss, and target remaining",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "jeet2792",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

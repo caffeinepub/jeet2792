@@ -1,0 +1,83 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-06T18:01:48.124Z",
+  "summary": "Most core calculator features are implemented: themed app shell, capital/target editors with inline validation, win/loss trade entry using 1.98x/0.98x math, presets, live metrics incl. target remaining, trade history, reset w/ confirmation, and authenticated vs session-only modes. However, the diff does not show trades storing/displaying the 1.98x *return* value, and it’s unclear from the truncated backend whether the reset endpoint exists.",
+  "missing_requirements": [
+    {
+      "id": "REQ-4",
+      "requirement": "For Win trades: stored/displayed profit equals invest * 0.98 and return equals invest * 1.98.",
+      "reason": "UI shows the computed 'Win Return' at entry time, but recorded Trade objects and TradeHistory display only invest, outcome, and a single profitOrLoss field; no stored/displayed per-trade return is present in the shown diff.",
+      "evidence": [
+        "backend/main.mo (Trade type only has profitOrLoss; no return field)",
+        "frontend/src/features/trading/components/TradeHistory.tsx (columns: Investment, Outcome, Profit/Loss; no Return)",
+        "frontend/src/features/trading/state/useTradingSession.ts (newTrade contains profitOrLoss only)"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Provide a clear reset mechanism to start over (reset should require confirmation).",
+      "reason": "Frontend includes a confirmation dialog and calls actor.resetTradingData(), but the backend diff is truncated and does not show an implemented resetTradingData method, so backend support cannot be confirmed from provided evidence.",
+      "evidence": [
+        "frontend/src/features/trading/hooks/useTradingData.ts (calls actor.resetTradingData())",
+        "backend/main.mo (truncated; no resetTradingData shown)"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "User profile creation/setup flow (name prompt) and profile storage APIs.",
+      "reason": "BuildRequest does not require user profiles; only Internet Identity authentication and persistence of trading data per user.",
+      "evidence": [
+        "backend/main.mo (UserProfile type, getCallerUserProfile/getUserProfile/saveCallerUserProfile)",
+        "frontend/src/components/ProfileSetupModal.tsx",
+        "frontend/src/features/trading/hooks/useTradingData.ts (useGetCallerUserProfile/useSaveCallerUserProfile)"
+      ]
+    },
+    {
+      "description": "Custom access control/authorization mixin and admin-token initialization via URL parameter.",
+      "reason": "BuildRequest only mentions Internet Identity; it does not request additional admin/user role authorization layers or secret token bootstrapping.",
+      "evidence": [
+        "backend/main.mo (MixinAuthorization, AccessControl, permission checks)",
+        "frontend/src/hooks/useActor.ts (reads caffeineAdminToken and calls actor._initializeAccessControlWithSecret)",
+        "frontend/src/utils/urlParams.ts"
+      ]
+    },
+    {
+      "description": "Branding/footer link to caffeine.ai and heart symbol in footer.",
+      "reason": "Not requested; additionally introduces non-specified branding content in the UI.",
+      "evidence": [
+        "frontend/src/App.tsx (footer with \"Built with ❤️ using caffeine.ai\")"
+      ]
+    }
+  ],
+  "confidence": 0.74,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/AuthControls.tsx",
+    "frontend/src/components/ProfileSetupModal.tsx",
+    "frontend/src/features/trading/TradingDashboard.tsx",
+    "frontend/src/features/trading/components/CapitalEditor.tsx",
+    "frontend/src/features/trading/components/InvestPresets.tsx",
+    "frontend/src/features/trading/components/MetricsPanel.tsx",
+    "frontend/src/features/trading/components/ResetTradingDataButton.tsx",
+    "frontend/src/features/trading/components/TargetProfitEditor.tsx",
+    "frontend/src/features/trading/components/TradeEntry.tsx",
+    "frontend/src/features/trading/components/TradeHistory.tsx",
+    "frontend/src/features/trading/hooks/useTradingData.ts",
+    "frontend/src/features/trading/state/useTradingSession.ts",
+    "frontend/src/features/trading/utils/tradingMath.ts",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

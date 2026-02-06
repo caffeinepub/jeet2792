@@ -1,0 +1,211 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "jeet2792 — Trading calculator (fixed 1.98x payout) frontend",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Create the “jeet2792” app shell with a consistent, non-default theme across all UI.",
+      "acceptanceCriteria": [
+        "All user-facing text is in English.",
+        "App has a consistent theme (no default/unstyled UI), including clear hierarchy for key stats and inputs.",
+        "Theme avoids blue/purple as the primary palette unless explicitly chosen by the user (not requested here)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the app shell layout for “jeet2792” (header, content container, consistent spacing/typography) and compose the main trading screen within it using shadcn-ui primitives where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Add global styling and theme tokens (colors/typography/spacing) ensuring the primary palette is not blue/purple; apply consistent base styles across the app."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Allow users to set/edit current trading capital with validation and immediate recomputation of displayed stats.",
+      "acceptanceCriteria": [
+        "User can enter a capital amount and save it; the displayed current capital updates immediately.",
+        "User can edit capital again later; stats recalculate using the updated capital.",
+        "Capital cannot be set to a non-numeric value; invalid input is rejected with an inline error."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/trading/components/CapitalEditor.tsx",
+          "operation": "create",
+          "description": "Implement a capital input/editor with inline validation (numeric, non-negative) and a save/apply action; when authenticated, call the backend capability to set capital; when not authenticated, update local session state. Use shadcn-ui form/input components for consistent styling. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/trading/state/useTradingSession.ts",
+          "operation": "create",
+          "description": "Create a small client-side session store for unauthenticated users (capital/target/totals/history) and derived computations; expose setters used by the editor and trade entry."
+        },
+        {
+          "path": "frontend/src/features/trading/TradingDashboard.tsx",
+          "operation": "create",
+          "description": "Wire CapitalEditor into the dashboard and ensure changes propagate immediately to all displayed metrics (authenticated via queries/mutations; unauthenticated via session store)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Add target profit input with real-time target remaining calculation based on total profit.",
+      "acceptanceCriteria": [
+        "User can set/edit a target profit amount at any time.",
+        "UI displays target remaining = max(targetProfit - totalProfit, 0) and updates immediately after any change in target or after recording a trade.",
+        "Invalid/non-numeric target input is rejected with an inline error."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/trading/components/TargetProfitEditor.tsx",
+          "operation": "create",
+          "description": "Implement target profit input/editor with inline validation (numeric, non-negative). When authenticated, call the backend capability to set target profit; otherwise update local session state. Use shadcn-ui input/form components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/trading/utils/tradingMath.ts",
+          "operation": "create",
+          "description": "Add shared helpers to compute target remaining = max(target - totalProfit, 0) and currency rounding/formatting utilities used across the UI."
+        },
+        {
+          "path": "frontend/src/features/trading/TradingDashboard.tsx",
+          "operation": "modify",
+          "description": "Display and update target remaining in real time using the shared math helpers; ensure it reacts to target edits and trade recording."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Implement trade entry with Win/Loss only and fixed 1.98x payout logic; validate invest amount before recording.",
+      "acceptanceCriteria": [
+        "Trade outcome choices are limited to Win and Loss only.",
+        "For Win trades: stored/displayed profit equals invest * 0.98 and return equals invest * 1.98 (with appropriate rounding to 2 decimals for currency display).",
+        "For Loss trades: stored/displayed loss equals invest amount.",
+        "User can record a trade only when invest is a valid positive number."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/trading/components/TradeEntry.tsx",
+          "operation": "create",
+          "description": "Build the trade entry UI with invest amount input and two explicit actions (Win, Loss only). Validate invest as a positive number; show computed return/profit preview for Win using the fixed 1.98x/0.98x rules with 2-decimal display. Use shadcn-ui buttons/inputs for consistent UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/trading/utils/tradingMath.ts",
+          "operation": "modify",
+          "description": "Add deterministic calculation helpers for profit/return for Win and loss amount for Loss (including 2-decimal rounding for display)."
+        },
+        {
+          "path": "frontend/src/features/trading/TradingDashboard.tsx",
+          "operation": "modify",
+          "description": "Wire TradeEntry into the dashboard so recording a trade updates persisted (authenticated) or session (unauthenticated) data flows."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Provide quick-select invest presets matching the provided table and show corresponding return/profit values.",
+      "acceptanceCriteria": [
+        "UI includes quick-select controls for all listed invest presets.",
+        "When a preset is selected, the UI shows the correct return and profit values matching the provided table.",
+        "If manual invest entry is supported, computed values still follow the 1.98x/0.98x logic."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/trading/components/InvestPresets.tsx",
+          "operation": "create",
+          "description": "Create preset quick-select controls for the exact invest amounts (₹1, ₹10, ₹50, ₹100, ₹200, ₹500, ₹1,000, ₹2,000, ₹5,000, ₹10,000) and display the corresponding computed return/profit (per 1.98x/0.98x). Use shadcn-ui button/toggle components for selectable presets. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/trading/components/TradeEntry.tsx",
+          "operation": "modify",
+          "description": "Integrate InvestPresets into trade entry so selecting a preset sets the invest amount and updates computed preview immediately."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Maintain and display real-time dashboard metrics (capital, total profit, total loss, target remaining) updating after each trade.",
+      "acceptanceCriteria": [
+        "After recording a Win trade, current capital increases by the computed profit and total profit increases by the same amount.",
+        "After recording a Loss trade, current capital decreases by the invested amount and total loss increases by the same amount.",
+        "All four metrics (capital, total profit, total loss, target remaining) update immediately after each trade is recorded."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/trading/components/MetricsPanel.tsx",
+          "operation": "create",
+          "description": "Create a metrics panel/cards showing current capital, total profit, total loss, and target remaining with clear hierarchy and immediate updates. Use shadcn-ui card components for consistent styling. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/trading/hooks/useTradingData.ts",
+          "operation": "create",
+          "description": "Implement authenticated data loading and updates via react-query using backend capabilities (load trading data on start; mutations for recording trades, setting capital/target, reset). Provide derived values needed by the dashboard."
+        },
+        {
+          "path": "frontend/src/features/trading/TradingDashboard.tsx",
+          "operation": "modify",
+          "description": "Compose MetricsPanel with the authenticated hook (when signed in) and the unauthenticated session store fallback (when signed out), ensuring immediate UI updates after mutations/session updates."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Show a trade history list with reset functionality that requires confirmation.",
+      "acceptanceCriteria": [
+        "After each trade, a new entry appears in history with the correct computed values.",
+        "History clearly differentiates Win vs Loss trades and shows the relevant amount (profit for win, loss for loss).",
+        "User can reset all session data (capital/target/totals/history) only after confirming; after reset, all metrics return to zero/empty state."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/trading/components/TradeHistory.tsx",
+          "operation": "create",
+          "description": "Implement a trade history list rendering timestamp, invest amount, outcome (Win/Loss), and profit or loss amount with clear visual differentiation. Use shadcn-ui table/badge components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/trading/components/ResetTradingDataButton.tsx",
+          "operation": "create",
+          "description": "Add a reset button that opens a confirmation dialog; on confirm, reset authenticated persisted data via backend capability when signed in, otherwise clear local session state. Use shadcn-ui alert dialog components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/trading/TradingDashboard.tsx",
+          "operation": "modify",
+          "description": "Wire TradeHistory and ResetTradingDataButton into the dashboard and ensure post-reset UI returns to empty/zero state immediately."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Support Internet Identity authentication and per-user persistence for capital/target/totals/history, while allowing unauthenticated local session use.",
+      "acceptanceCriteria": [
+        "When signed in, user data (capital/target/totals/history) is restored after refresh/reopen.",
+        "Changes (editing capital, editing target, recording trade, reset) persist and are reflected after reload.",
+        "Unauthenticated users can still use the calculator locally in the UI for the current session, but persistence requires signing in (or clearly prompt to sign in)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/AuthControls.tsx",
+          "operation": "create",
+          "description": "Create login/logout controls using the selected authorization component’s frontend guidance (via existing Internet Identity hooks). On logout, clear cached app queries/state. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/ProfileSetupModal.tsx",
+          "operation": "create",
+          "description": "Implement first-login profile setup flow (ask for user name once) by calling getCallerUserProfile/saveCallerUserProfile and preventing modal flash per the selected authorization component guidance. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/trading/hooks/useTradingData.ts",
+          "operation": "modify",
+          "description": "Ensure authenticated load-on-start and save-after-change behaviors are covered via react-query (invalidate/refetch on successful mutations) and that unauthenticated users remain on a local in-memory session path with a clear sign-in prompt for persistence."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire AuthControls and ProfileSetupModal into the app shell; render the trading dashboard for both unauthenticated (local session) and authenticated (persisted) modes with a clear note that persistence requires signing in. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}
